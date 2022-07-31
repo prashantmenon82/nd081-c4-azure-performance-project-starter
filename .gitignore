@@ -1,1 +1,4 @@
 .DS_Store
+
+# virtual env folder
+uda_venv
