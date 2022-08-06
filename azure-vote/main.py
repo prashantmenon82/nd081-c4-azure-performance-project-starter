@@ -1,3 +1,4 @@
+from traceback import print_tb
 from flask import Flask, request, render_template
 import os
 import random
@@ -142,18 +143,28 @@ def index():
 
             # Insert vote result into DB
             vote = request.form['vote']
+            print('vote', vote)
             r.incr(vote,1)
-
+            
+            
             # Get current values
             vote1 = r.get(button1).decode('utf-8')
             properties = {'custom_dimensions': {'Cats Vote': vote1}}
-            # TODO: use logger object to log cat vote
-            logger.info('Cats Vote', extra=properties)
+            
+            print('cat vote1', vote1)
             
             vote2 = r.get(button2).decode('utf-8')
             properties = {'custom_dimensions': {'Dogs Vote': vote2}}
             # TODO: use logger object to log dog vote
             logger.info('Dogs Vote', extra=properties)  
+            print('dog vote2', vote2)
+
+            if vote == 'Cats':
+                # TODO: use logger object to log cat vote
+                logger.info('Cats Vote', extra=properties)
+            if vote == 'Dogs':
+                # TODO: use logger object to log cat vote
+                logger.info('Dogs Vote', extra=properties)
 
             # Return results
             return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
